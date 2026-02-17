@@ -92,7 +92,13 @@ export default function RegisterPage() {
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Registration failed";
-      setServerError(message);
+      if (message.toLowerCase().includes("failed to fetch") || message.toLowerCase().includes("network")) {
+        setServerError(
+          "Unable to reach the server. The backend may be waking up from sleep (free tier). Please wait a moment and try again."
+        );
+      } else {
+        setServerError(message);
+      }
     }
   };
 

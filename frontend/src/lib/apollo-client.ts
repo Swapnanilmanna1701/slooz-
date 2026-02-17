@@ -2,6 +2,7 @@
 
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client/core";
 import { setContext } from "@apollo/client/link/context";
+import { RetryLink } from "@apollo/client/link/retry";
 import Cookies from "js-cookie";
 
 const httpLink = createHttpLink({
@@ -18,8 +19,20 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const retryLink = new RetryLink({
+  delay: {
+    initial: 1000,
+    max: 5000,
+    jitter: true,
+  },
+  attempts: {
+    max: 3,
+    retryIf: (error) => !!error,
+  },
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(retryLink).concat(httpLink),
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {
