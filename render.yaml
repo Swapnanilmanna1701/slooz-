@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: slooz-backend
+    runtime: node
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma migrate deploy && npm run seed || true && npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:./prisma/dev.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 24h
+      - key: FRONTEND_URL
+        sync: false
+    disk:
+      name: slooz-data
+      mountPath: /opt/render/project/src/prisma
+      sizeGB: 1
