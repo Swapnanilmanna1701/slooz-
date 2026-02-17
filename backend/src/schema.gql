@@ -1,0 +1,107 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthPayload {
+  accessToken: String!
+  user: UserModel!
+}
+
+type CategoryStat {
+  category: String!
+  count: Int!
+  totalValue: Float!
+}
+
+input CreateProductInput {
+  category: String!
+  description: String
+  imageUrl: String
+  name: String!
+  price: Float!
+  quantity: Int!
+  sku: String!
+  unit: String! = "pcs"
+}
+
+type DashboardStats {
+  categoriesCount: Int!
+  categoryBreakdown: [CategoryStat!]!
+  lowStockCount: Int!
+  totalInventoryValue: Float!
+  totalProducts: Int!
+  totalQuantity: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createProduct(input: CreateProductInput!): ProductModel!
+  deleteProduct(id: ID!): ProductModel!
+  login(loginInput: LoginInput!): AuthPayload!
+  register(registerInput: RegisterInput!): AuthPayload!
+  updateProduct(input: UpdateProductInput!): ProductModel!
+}
+
+type ProductModel {
+  category: String!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  imageUrl: String
+  name: String!
+  price: Float!
+  quantity: Int!
+  sku: String!
+  unit: String!
+  updatedAt: DateTime!
+}
+
+type Query {
+  dashboardStats: DashboardStats!
+  me: UserModel!
+  product(id: ID!): ProductModel!
+  products: [ProductModel!]!
+}
+
+input RegisterInput {
+  email: String!
+  name: String!
+  password: String!
+  role: Role! = STORE_KEEPER
+}
+
+"""User roles for access control"""
+enum Role {
+  MANAGER
+  STORE_KEEPER
+}
+
+input UpdateProductInput {
+  category: String
+  description: String
+  id: ID!
+  imageUrl: String
+  name: String
+  price: Float
+  quantity: Int
+  sku: String
+  unit: String
+}
+
+type UserModel {
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  role: Role!
+  updatedAt: DateTime!
+}
