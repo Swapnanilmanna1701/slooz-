@@ -25,6 +25,7 @@ exports.AppModule = AppModule = __decorate([
                 autoSchemaFile: (0, path_1.join)(process.cwd(), 'src/schema.gql'),
                 sortSchema: true,
                 playground: true,
+                introspection: true,
                 context: ({ req }) => ({ req }),
             }),
             prisma_module_1.PrismaModule,
